@@ -82,6 +82,18 @@
   </style>
 </head>
 <body>
+  <div style="width:95%;max-width:600px;margin:30px auto 10px auto;">
+    <label for="month-filter" style="font-weight:bold;">Filter by Month: </label>
+    <select id="month-filter" style="padding:6px 12px;border-radius:5px;border:1px solid #b3c6e0;">
+      <option value="all">All</option>
+      <option value="may">May 2025</option>
+      <option value="june">June 2025</option>
+      <option value="july">July 2025</option>
+      <option value="august">August 2025</option>
+      <option value="september">September 2025</option>
+    </select>
+  </div>
+
   <h1>Calendar: May - August 2025</h1>
 
   <h2>May 2025</h2>
@@ -259,5 +271,71 @@
     </tr>
     <!-- Add more days as needed -->
   </table>
+
+  <script>
+    // Add this script at the end of your <body>
+    document.getElementById('month-filter').addEventListener('change', function() {
+      const val = this.value;
+      const months = ['may','june','july','august','september'];
+      months.forEach(m => {
+        const table = document.querySelector('h2:contains("' + m.charAt(0).toUpperCase() + m.slice(1) + ' 2025") + .calendar-table');
+        if (table) {
+          table.style.display = (val === 'all' || val === m) ? '' : 'none';
+          const heading = table.previousElementSibling;
+          if (heading && heading.tagName === 'H2') {
+            heading.style.display = (val === 'all' || val === m) ? '' : 'none';
+          }
+        }
+      });
+    });
+
+    // Polyfill for :contains for querySelector (for vanilla JS)
+    (function(){
+      if (!Element.prototype.matches) Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+      if (!Element.prototype.closest) Element.prototype.closest = function(s) {
+        var el = this;
+        do {
+          if (el.matches(s)) return el;
+          el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+      };
+      // Add :contains support for querySelector
+      if (!document.querySelectorContains) {
+        document.querySelectorContains = function(txt) {
+          var nodes = document.querySelectorAll('h2');
+          for (var i=0;i<nodes.length;i++) {
+            if (nodes[i].textContent.indexOf(txt) !== -1) return nodes[i];
+          }
+          return null;
+        }
+      }
+    })();
+
+    // Patch for querySelector('h2:contains("May 2025")')
+    function getMonthTable(month) {
+      var h2 = document.querySelectorContains(month + ' 2025');
+      if (!h2) return null;
+      var table = h2.nextElementSibling;
+      if (table && table.tagName === 'TABLE') return table;
+      return null;
+    }
+
+    // Override the event listener to use the above
+    document.getElementById('month-filter').addEventListener('change', function() {
+      const val = this.value;
+      const months = ['May','June','July','August','September'];
+      months.forEach(m => {
+        const table = getMonthTable(m);
+        if (table) {
+          table.style.display = (val === 'all' || val === m.toLowerCase()) ? '' : 'none';
+          const heading = table.previousElementSibling;
+          if (heading && heading.tagName === 'H2') {
+            heading.style.display = (val === 'all' || val === m.toLowerCase()) ? '' : 'none';
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
