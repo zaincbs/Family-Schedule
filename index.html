@@ -4,223 +4,167 @@
   <meta charset="UTF-8">
   <title>Calendar: May - August 2025</title>
   <style>
-    body { 
-      font-family: 'Segoe UI', Arial, sans-serif; 
-      margin: 0;
-      background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
-      color: #222;
-    }
-    h1 {
-      margin-top: 30px;
-      font-size: 2.2em;
-      letter-spacing: 1px;
-      color: #2a4d69;
-    }
-    h2 {
-      margin-top: 40px;
-      margin-bottom: 10px;
-      color: #4f81a6;
-      border-bottom: 2px solid #b3c6e0;
-      padding-bottom: 4px;
-      font-size: 1.3em;
-      letter-spacing: 1px;
-    }
-    .calendar-table {
-      width: 95%; 
-      margin: 0 auto 40px auto;
-      border-collapse: separate;
-      border-spacing: 0;
-      box-shadow: 0 2px 12px rgba(44,62,80,0.07);
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    th, td { 
-      padding: 10px 12px; 
-      text-align: left; 
-    }
-    th { 
-      background-color: #e3ecf7;
-      color: #2a4d69;
-      font-weight: 600;
-      border-bottom: 2px solid #b3c6e0;
-    }
-    tr:not(:last-child) td {
-      border-bottom: 1px solid #e6eaf0;
-    }
-    tr.event-row {
-      background-color: #f9f6e7;
-    }
-    tr.event-row .highlight {
-      color: #b85c38;
-      font-weight: bold;
-    }
-    tr.no-event-row {
-      color: #aaa;
-      background: #f7fafd;
-    }
-    tr:hover {
-      background: #f0f6fa;
-      transition: background 0.2s;
-    }
-    .today-row {
-      background: #d1e7dd !important;
-      font-weight: bold;
-    }
-    @media (max-width: 700px) {
-      .calendar-table, th, td {
-        font-size: 0.95em;
-      }
-      h1 { font-size: 1.3em; }
-      h2 { font-size: 1.1em; }
-    }
-    @media print {
-      body { margin: 0; }
-      .calendar-table { box-shadow: none; }
-      h1, h2 { color: #000; }
-    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%); color: #222; }
+    h1 { margin-top: 30px; font-size: 2.2em; letter-spacing: 1px; color: #2a4d69; }
+    h2 { margin-top: 40px; margin-bottom: 10px; color: #4f81a6; border-bottom: 2px solid #b3c6e0; padding-bottom: 4px; font-size: 1.3em; letter-spacing: 1px; }
+    .calendar-table { width: 95%; margin: 0 auto 40px auto; border-collapse: separate; border-spacing: 0; box-shadow: 0 2px 12px rgba(44,62,80,0.07); background: #fff; border-radius: 10px; overflow: hidden; }
+    th, td { padding: 10px 12px; text-align: left; }
+    th { background-color: #e3ecf7; color: #2a4d69; font-weight: 600; border-bottom: 2px solid #b3c6e0; }
+    tr:not(:last-child) td { border-bottom: 1px solid #e6eaf0; }
+    tr.event-row { background-color: #f9f6e7; }
+    tr.no-event-row { color: #aaa; background: #f7fafd; }
+    tr:hover { background: #f0f6fa; transition: background 0.2s; }
+    .edit-btn { background: #4f81a6; color: #fff; border: none; border-radius: 4px; padding: 3px 8px; cursor: pointer; }
+    .edit-btn:hover { background: #2a4d69; }
+    #event-form { margin: 30px auto 10px auto; width: 95%; max-width: 500px; background: #fff; border-radius: 10px; box-shadow: 0 2px 12px rgba(44,62,80,0.07); padding: 20px; }
+    #event-form input, #event-form select { margin-bottom: 10px; width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #b3c6e0; }
+    #event-form button { background: #4f81a6; color: #fff; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
+    #event-form button:hover { background: #2a4d69; }
   </style>
 </head>
 <body>
-  <h1>Calendar: May - August 2025</h1>
+  <h1>Calendar: May 2025</h1>
+
+  <form id="event-form">
+    <h2>Add/Edit Event</h2>
+    <label>Date: <input type="date" id="event-date" min="2025-05-27" max="2025-05-31" required></label><br>
+    <label>Time: <input type="time" id="event-time"></label><br>
+    <label>Event: <input type="text" id="event-title" required></label><br>
+    <input type="hidden" id="edit-index">
+    <button type="submit">Save Event</button>
+    <button type="button" id="cancel-edit" style="display:none;">Cancel</button>
+  </form>
 
   <h2>May 2025</h2>
-  <table class="calendar-table">
+  <table class="calendar-table" id="calendar-table">
     <tr>
       <th>Date</th>
       <th>Day</th>
       <th>Time</th>
       <th>Event</th>
+      <th>Edit</th>
     </tr>
-    <!-- Only the last 5 days of May -->
-    <tr class="no-event-row"><td>May 27</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>May 28</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>May 29</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>May 30</td><td>Friday</td><td></td><td>Staff Dinner</td></tr>
-    <tr class="event-row"><td>May 31</td><td>Saturday</td><td></td><td>Zohair Walima (EG)</td></tr>
-    <tr class="event-row"><td>May 31</td><td>Saturday</td><td></td><td>Cricket Game</td></tr>
+    <!-- Rows will be generated by JS -->
   </table>
 
-  <h2>June 2025</h2>
-  <table class="calendar-table">
-    <tr>
-      <th>Date</th>
-      <th>Day</th>
-      <th>Time</th>
-      <th>Event</th>
-    </tr>
-    <tr class="event-row"><td>June 1</td><td>Sunday</td><td>3:00 PM</td><td>Drop off Ruhma & Salman Bhai at the airport</td></tr>
-    <tr class="event-row"><td>June 2</td><td>Monday</td><td></td><td>Baba Arrival</td></tr>
-    <tr class="no-event-row"><td>June 3</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>June 4</td><td>Wednesday</td><td></td><td>Hammad's Pre-K Graduation + Potluck</td></tr>
-    <tr class="event-row"><td>June 5</td><td>Thursday</td><td></td><td>Graduation</td></tr>
-    <tr class="event-row"><td>June 6</td><td>Friday</td><td></td><td>Eid</td></tr>
-    <tr class="event-row"><td>June 7</td><td>Saturday</td><td></td><td>Eid Celebrations (Bushra, Home, Amer Mamu)</td></tr>
-    <tr class="event-row"><td>June 8</td><td>Sunday</td><td></td><td>Cricket Game</td></tr>
-    <tr class="no-event-row"><td>June 9</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 10</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 11</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 12</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>June 13</td><td>Friday</td><td></td><td class="highlight">Alian’s SWANA Cultural Graduation Ceremony</td></tr>
-    <tr class="event-row"><td>June 14</td><td>Saturday</td><td></td><td class="highlight">Cricket Game / Alian’s Cal Poly Large Graduation Ceremony</td></tr>
-    <tr class="event-row"><td>June 15</td><td>Sunday</td><td></td><td class="highlight">Alian’s Civil Department Graduation Ceremony</td></tr>
-    <tr class="no-event-row"><td>June 16</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 17</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 18</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 19</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 20</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 21</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 22</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 23</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 24</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 25</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 26</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 27</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>June 28</td><td>Saturday</td><td></td><td>Cricket Game</td></tr>
-    <tr class="no-event-row"><td>June 29</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>June 30</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-  </table>
+  <script>
+    // Helper: get weekday name
+    function getWeekday(dateStr) {
+      const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      return days[new Date(dateStr).getDay()];
+    }
 
-  <h2>July 2025</h2>
-  <table class="calendar-table">
-    <tr>
-      <th>Date</th>
-      <th>Day</th>
-      <th>Time</th>
-      <th>Event</th>
-    </tr>
-    <tr class="no-event-row"><td>July 1</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 2</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 3</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 4</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 5</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 6</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 7</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 8</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 9</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 10</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 11</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>July 12</td><td>Saturday</td><td></td><td>Cricket Game</td></tr>
-    <tr class="no-event-row"><td>July 13</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 14</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 15</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 16</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 17</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 18</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>July 19</td><td>Saturday</td><td></td><td>Ainie Baji’s 40th (Roseville)</td></tr>
-    <tr class="event-row"><td>July 20</td><td>Sunday</td><td></td><td>Cricket Game</td></tr>
-    <tr class="no-event-row"><td>July 21</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 22</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 23</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 24</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 25</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>July 26</td><td>Saturday</td><td></td><td>10th Anniversary + Mina’s Due Date (Baby Shower)</td></tr>
-    <tr class="event-row"><td>July 27</td><td>Sunday</td><td></td><td>Hamza Arriving</td></tr>
-    <tr class="no-event-row"><td>July 28</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 29</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 30</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>July 31</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-  </table>
+    // Initial calendar days (last 5 days of May)
+    const calendarDays = [
+      "2025-05-27", "2025-05-28", "2025-05-29", "2025-05-30", "2025-05-31"
+    ];
 
-  <h2>August 2025</h2>
-  <table class="calendar-table">
-    <tr>
-      <th>Date</th>
-      <th>Day</th>
-      <th>Time</th>
-      <th>Event</th>
-    </tr>
-    <tr class="no-event-row"><td>August 1</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 2</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>August 3</td><td>Sunday</td><td></td><td>Cricket Game / Areeba’s Baby Shower</td></tr>
-    <tr class="no-event-row"><td>August 4</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 5</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>August 6</td><td>Wednesday</td><td></td><td>Rear Staff</td></tr>
-    <tr class="no-event-row"><td>August 7</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 8</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 9</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 10</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 11</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 12</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 13</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 14</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 15</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 16</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 17</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>August 18</td><td>Monday</td><td></td><td>First Day of School</td></tr>
-    <tr class="no-event-row"><td>August 19</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 20</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 21</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 22</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 23</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="event-row"><td>August 24</td><td>Sunday</td><td></td><td>Cricket Game</td></tr>
-    <tr class="no-event-row"><td>August 25</td><td>Monday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 26</td><td>Tuesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 27</td><td>Wednesday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 28</td><td>Thursday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 29</td><td>Friday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 30</td><td>Saturday</td><td></td><td>No events scheduled</td></tr>
-    <tr class="no-event-row"><td>August 31</td><td>Sunday</td><td></td><td>No events scheduled</td></tr>
-  </table>
+    // Default events
+    const defaultEvents = [
+      { date: "2025-05-30", time: "", title: "Staff Dinner" },
+      { date: "2025-05-31", time: "", title: "Zohair Walima (EG)" },
+      { date: "2025-05-31", time: "", title: "Cricket Game" }
+    ];
+
+    // Load events from localStorage or use default
+    function loadEvents() {
+      const data = localStorage.getItem("may2025events");
+      if (data) return JSON.parse(data);
+      localStorage.setItem("may2025events", JSON.stringify(defaultEvents));
+      return [...defaultEvents];
+    }
+
+    function saveEvents(events) {
+      localStorage.setItem("may2025events", JSON.stringify(events));
+    }
+
+    // Render calendar
+    function renderCalendar() {
+      const events = loadEvents();
+      const table = document.getElementById("calendar-table");
+      // Remove old rows except header
+      table.querySelectorAll("tr:not(:first-child)").forEach(tr => tr.remove());
+
+      calendarDays.forEach(dateStr => {
+        const dayEvents = events.filter(e => e.date === dateStr);
+        const dayName = getWeekday(dateStr);
+        if (dayEvents.length === 0) {
+          const tr = document.createElement("tr");
+          tr.className = "no-event-row";
+          tr.innerHTML = `<td>${formatDate(dateStr)}</td><td>${dayName}</td><td></td><td>No events scheduled</td><td><button class="edit-btn" onclick="editEvent('${dateStr}')">Add</button></td>`;
+          table.appendChild(tr);
+        } else {
+          dayEvents.forEach((event, idx) => {
+            const tr = document.createElement("tr");
+            tr.className = "event-row";
+            tr.innerHTML = `<td>${formatDate(dateStr)}</td><td>${dayName}</td><td>${event.time || ""}</td><td>${event.title}</td><td><button class="edit-btn" onclick="editEvent('${dateStr}', ${idx})">Edit</button></td>`;
+            table.appendChild(tr);
+          });
+        }
+      });
+    }
+
+    // Format date as "May 27"
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleString('default', { month: 'short', day: 'numeric' });
+    }
+
+    // Add/Edit event logic
+    document.getElementById("event-form").onsubmit = function(e) {
+      e.preventDefault();
+      const date = document.getElementById("event-date").value;
+      const time = document.getElementById("event-time").value;
+      const title = document.getElementById("event-title").value;
+      const editIndex = document.getElementById("edit-index").value;
+      let events = loadEvents();
+
+      if (editIndex) {
+        // Edit existing
+        const [editDate, idx] = editIndex.split(",");
+        events = events.map((ev, i) => (ev.date === editDate && i === +idx) ? { date, time, title } : ev);
+      } else {
+        // Add new
+        events.push({ date, time, title });
+      }
+      saveEvents(events);
+      renderCalendar();
+      this.reset();
+      document.getElementById("cancel-edit").style.display = "none";
+      document.getElementById("edit-index").value = "";
+    };
+
+    // Edit event
+    window.editEvent = function(date, idx) {
+      const events = loadEvents();
+      if (typeof idx === "number") {
+        // Edit existing event
+        const event = events.filter(e => e.date === date)[idx];
+        document.getElementById("event-date").value = event.date;
+        document.getElementById("event-time").value = event.time;
+        document.getElementById("event-title").value = event.title;
+        document.getElementById("edit-index").value = `${date},${idx}`;
+        document.getElementById("cancel-edit").style.display = "";
+      } else {
+        // Add new event for this date
+        document.getElementById("event-date").value = date;
+        document.getElementById("event-time").value = "";
+        document.getElementById("event-title").value = "";
+        document.getElementById("edit-index").value = "";
+        document.getElementById("cancel-edit").style.display = "none";
+      }
+      document.getElementById("event-date").focus();
+    };
+
+    // Cancel edit
+    document.getElementById("cancel-edit").onclick = function() {
+      document.getElementById("event-form").reset();
+      document.getElementById("edit-index").value = "";
+      this.style.display = "none";
+    };
+
+    // Initial render
+    renderCalendar();
+  </script>
 </body>
 </html>
